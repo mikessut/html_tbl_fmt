@@ -1,10 +1,13 @@
 """
 htf = HTMLTableFormatter(html_snippet)
+
 htf.odd_even_columns()
-htf.add_column_conditional(condition, css_cls)
+
+htf.add_column_conditional(TableCol(3) > 4, css_cls)
+htf.add_column_conditional(TableCol(3) > TableCol(0), css_cls)   # This will apply to formatting to TableCol(3)
+
 
 <style>
-
     .odd_col_cls {
         background-color: #ddd;
     }
@@ -41,6 +44,7 @@ class HTMLTableFormatter:
     def add_column_conditional(self, condition: 'ConditionColVal', css_cls: str):
         row_num = 0
         for tr in self._dom.find('.//tbody').iter('tr'):
+            condition.set_row([float(x.text) for x in tr.iter('td')])
             col_num = 0
             for td in tr.iter('td'):
                 val = td.text
@@ -59,9 +63,17 @@ class ConditionColVal:
         self._col = col
         self._val = val
         self._op = op
+        self._row = []
 
     def eval(self, val: float):
-        return getattr(val, self._op)(self._val)
+        if isinstance(self._val, TableCol):
+            # Comparing to another column
+            return getattr(val, self._op)(self._row[self._val._col])
+        else:
+            return getattr(val, self._op)(self._val)
+
+    def set_row(self, row_vals: list[float]):
+        self._row = row_vals
 
 
 class TableCol:
