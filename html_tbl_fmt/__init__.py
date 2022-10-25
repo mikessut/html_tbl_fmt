@@ -54,7 +54,7 @@ class HTMLTableFormatter:
             row_num += 1
     
     def tostring(self):
-        return lxml.html.tostring(self._dom)
+        return lxml.html.tostring(self._dom).decode()
 
 
 class ConditionColVal:
