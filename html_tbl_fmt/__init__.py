@@ -84,3 +84,17 @@ class TableCol:
     def __gt__(self, other) -> ConditionColVal:
         return ConditionColVal(self, other, '__gt__')
 
+    def __ge__(self, other) -> ConditionColVal:
+        return ConditionColVal(self, other, '__ge__')
+
+    def __eq__(self, other) -> ConditionColVal:
+        return ConditionColVal(self, other, '__eq__')
+
+    def __ne__(self, other) -> ConditionColVal:
+        return ConditionColVal(self, other, '__ne__')
+
+    def __lt__(self, other) -> ConditionColVal:
+        return ConditionColVal(self, other, '__lt__')
+    
+    def __le__(self, other) -> ConditionColVal:
+        return ConditionColVal(self, other, '__le__')
